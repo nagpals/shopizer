@@ -127,7 +127,13 @@ public class ContentServiceImpl extends SalesManagerEntityServiceImpl<Long, Cont
 
 	@Override
 	public Content getByCode(String code, MerchantStore store, Language language) throws ServiceException {
-		return contentRepository.findByCode(code, store.getId(), language.getId());
+		Content content = null;
+		try {
+			content = contentRepository.findByCode(code, store.getId(), language.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return content;
 	}
 
 	/**

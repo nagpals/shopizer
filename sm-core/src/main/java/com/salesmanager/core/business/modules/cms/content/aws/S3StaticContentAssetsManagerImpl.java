@@ -11,6 +11,10 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
@@ -38,6 +42,11 @@ import com.salesmanager.core.model.content.OutputContentFile;
 public class S3StaticContentAssetsManagerImpl implements ContentAssetsManager {
 
 	private static final long serialVersionUID = 1L;
+	@Value("${AWS_ACCESS_KEY_ID}")
+	private String AWS_ACCESS_KEY_ID;
+	@Value("${AWS_SECRETE_ACCESS_KEY}")
+	private String AWS_SECRETE_ACCESS_KEY;
+
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(S3StaticContentAssetsManagerImpl.class);
 
@@ -272,16 +281,14 @@ public class S3StaticContentAssetsManagerImpl implements ContentAssetsManager {
 	private AmazonS3 s3Client() {
 		String region = regionName();
 		LOGGER.debug("AWS CMS Using region " + region);
-
-		return AmazonS3ClientBuilder.standard().withRegion(region) // The
-																			// first
-																			// region
-																			// to
-																			// try
-																			// your
-																			// request
-																			// against
+		//return AmazonS3ClientBuilder.standard().withRegion(region).build();  // The first region to try your request against
+		BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(AWS_ACCESS_KEY_ID, AWS_SECRETE_ACCESS_KEY);
+		AmazonS3 amazonS3Client = AmazonS3ClientBuilder.standard()
+				.withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials)).
+				withRegion(region)
 				.build();
+		return amazonS3Client;
+
 	}
 
 	private String regionName() {

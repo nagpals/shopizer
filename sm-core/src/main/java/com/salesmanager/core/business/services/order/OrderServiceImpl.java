@@ -327,7 +327,8 @@ public class OrderServiceImpl  extends SalesManagerEntityServiceImpl<Long, Order
 
             if(!summary.getShippingSummary().isFreeShipping()) {
                 shippingSubTotal.setValue(summary.getShippingSummary().getShipping());
-                grandTotal=grandTotal.add(summary.getShippingSummary().getShipping());
+                if(summary.getShippingSummary().getShipping()!=null)
+                	grandTotal=grandTotal.add(summary.getShippingSummary().getShipping());
             } else {
                 shippingSubTotal.setValue(new BigDecimal(0));
                 grandTotal=grandTotal.add(new BigDecimal(0));

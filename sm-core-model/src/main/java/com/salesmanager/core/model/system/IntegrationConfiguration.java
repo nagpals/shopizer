@@ -49,6 +49,7 @@ public class IntegrationConfiguration implements JSONAware {
   }
 
   public Map<String, String> getIntegrationKeys() {
+	  System.out.println(integrationKeys);
     return integrationKeys;
   }
 

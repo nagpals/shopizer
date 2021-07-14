@@ -115,7 +115,29 @@
 		"image":"braintree.jpg",
 		"configuration":[{"env":"TEST","scheme":"https","host":"NOTREQUIRED","port":"NOTREQUIRED","uri":"NOTREQUIRED"},{"env":"PROD","scheme":"https","host":"NOTREQUIRED","port":"NOTREQUIRED","uri":"NOTREQUIRED"}]
 
+	},
+	{
+		"module": "PAYMENT",
+		"code": "cod",
+		"type":"creditcard",
+		"version":"1.0.0",
+		"regions": ["IN"],
+		"image":"braintree.jpg",
+		"configuration":[{"env":"TEST","scheme":"https","host":"NOTREQUIRED","port":"NOTREQUIRED","uri":"NOTREQUIRED"},{"env":"PROD","scheme":"https","host":"NOTREQUIRED","port":"NOTREQUIRED","uri":"NOTREQUIRED"}]
+
+	},
+	{
+		"module": "PAYMENT",
+		"code": "Razorpay",
+		"type":"creditcard",
+		"version":"1.0.0",
+		"regions": ["IN"],
+		"image":"braintree.jpg",
+		"configuration":[{"env":"TEST","scheme":"https","host":"https://razorpay.com","port":"NOTREQUIRED","uri":"NOTREQUIRED"},{"env":"PROD","scheme":"https","host":"NOTREQUIRED","port":"NOTREQUIRED","uri":"NOTREQUIRED"}]
+
 	}
+
+
 
 ]
 

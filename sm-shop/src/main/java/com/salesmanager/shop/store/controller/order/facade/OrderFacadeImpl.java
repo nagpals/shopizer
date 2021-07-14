@@ -1276,6 +1276,9 @@ public class OrderFacadeImpl implements OrderFacade {
 
 			BigDecimal calculatedAmount = orderTotalSummary.getTotal();
 			String strCalculatedTotal = calculatedAmount.toPlainString();
+			if(strCalculatedTotal!=null && strCalculatedTotal.indexOf(".") > 0) {
+				strCalculatedTotal = strCalculatedTotal.substring(0,strCalculatedTotal.indexOf("."));
+			}
 
 			// compare both prices
 			if (!submitedAmount.equals(strCalculatedTotal)) {

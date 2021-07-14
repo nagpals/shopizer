@@ -129,11 +129,8 @@ public class PaymentsController {
 			}
 		}
 		
-		
-		
 		model.addAttribute("success","success");
 		return ControllerConstants.Tiles.Payment.paymentMethod;
-		
 		
 	}
 	

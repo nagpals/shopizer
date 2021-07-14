@@ -99,7 +99,7 @@ public class ProductFileManagerImpl extends ProductFileManager {
 
       // upload original -- L
       contentImage.setFileContentType(FileContentType.PRODUCTLG);
-      uploadImage.addProductImage(productImage, contentImage);
+      uploadImage.addProductImage(productImage, contentImage);   // here it added image from CmsImageFileManager class. 
 
       /*
        * //default large InputContentImage largeContentImage = new
@@ -188,64 +188,61 @@ public class ProductFileManagerImpl extends ProductFileManager {
                 .append("tmpLarge").toString(), "." + extension);
         ImageIO.write(largeResizedImage, extension, tempLarge);
 
-        try(FileInputStream isLarge = new FileInputStream(tempLarge)) {
+		try (FileInputStream isLarge = new FileInputStream(tempLarge)) {
 
+			// IOUtils.copy(isLarge, output);
 
-        // IOUtils.copy(isLarge, output);
+			ImageContentFile largeContentImage = new ImageContentFile();
+			largeContentImage.setFileContentType(FileContentType.PRODUCT);
+			largeContentImage.setFileName(productImage.getProductImage());
+			largeContentImage.setFile(isLarge);
 
+			// largeContentImage.setBufferedImage(bufferedImage);
 
-        ImageContentFile largeContentImage = new ImageContentFile();
-        largeContentImage.setFileContentType(FileContentType.PRODUCT);
-        largeContentImage.setFileName(productImage.getProductImage());
-        largeContentImage.setFile(isLarge);
+			// largeContentImage.setFile(output);
+			// largeContentImage.setDefaultImage(false);
+			// largeContentImage.setImageName(new
+			// StringBuilder().append("L-").append(productImage.getProductImage()).toString());
 
+			uploadImage.addProductImage(productImage, largeContentImage);
 
-        // largeContentImage.setBufferedImage(bufferedImage);
+			// output.flush();
+			// output.close();
 
-        // largeContentImage.setFile(output);
-        // largeContentImage.setDefaultImage(false);
-        // largeContentImage.setImageName(new
-        // StringBuilder().append("L-").append(productImage.getProductImage()).toString());
+			tempLarge.delete();
 
+			// now upload original
 
-        uploadImage.addProductImage(productImage, largeContentImage);
+			/*
+			 * //resize small BufferedImage smallResizedImage =
+			 * ProductImageSizeUtils.resize(cropped, smallImageWidth, smallImageHeight);
+			 * File tempSmall = File.createTempFile(new
+			 * StringBuilder().append(productImage.getProduct().getId()).append("tmpSmall").
+			 * toString(), "." + extension ); ImageIO.write(smallResizedImage, extension,
+			 * tempSmall);
+			 *
+			 * //byte[] is = IOUtils.toByteArray(new FileInputStream(tempSmall));
+			 *
+			 * FileInputStream isSmall = new FileInputStream(tempSmall);
+			 *
+			 * output = new ByteArrayOutputStream(); IOUtils.copy(isSmall, output);
+			 *
+			 *
+			 * smallContentImage = new InputContentImage(ImageContentType.PRODUCT);
+			 * smallContentImage.setFile(output); smallContentImage.setDefaultImage(false);
+			 * smallContentImage.setImageName(new
+			 * StringBuilder().append("S-").append(productImage.getProductImage()).toString(
+			 * ));
+			 *
+			 * uploadImage.uploadProductImage(configuration, productImage,
+			 * smallContentImage);
+			 *
+			 * output.flush(); output.close();
+			 *
+			 * tempSmall.delete();
+			 */
 
-        // output.flush();
-        // output.close();
-
-        tempLarge.delete();
-
-        // now upload original
-
-
-
-        /*
-         * //resize small BufferedImage smallResizedImage = ProductImageSizeUtils.resize(cropped,
-         * smallImageWidth, smallImageHeight); File tempSmall = File.createTempFile(new
-         * StringBuilder().append(productImage.getProduct().getId()).append("tmpSmall").toString(),
-         * "." + extension ); ImageIO.write(smallResizedImage, extension, tempSmall);
-         *
-         * //byte[] is = IOUtils.toByteArray(new FileInputStream(tempSmall));
-         *
-         * FileInputStream isSmall = new FileInputStream(tempSmall);
-         *
-         * output = new ByteArrayOutputStream(); IOUtils.copy(isSmall, output);
-         *
-         *
-         * smallContentImage = new InputContentImage(ImageContentType.PRODUCT);
-         * smallContentImage.setFile(output); smallContentImage.setDefaultImage(false);
-         * smallContentImage.setImageName(new
-         * StringBuilder().append("S-").append(productImage.getProductImage()).toString());
-         *
-         * uploadImage.uploadProductImage(configuration, productImage, smallContentImage);
-         *
-         * output.flush(); output.close();
-         *
-         * tempSmall.delete();
-         */
-
-
-    }
+		}
       } else {
         // small will be the same as the original
         contentImage.setFileContentType(FileContentType.PRODUCT);

@@ -19,6 +19,7 @@ public class CoreConfiguration {
 
 	public void setProperties(Properties properties) {
 		this.properties = properties;
+		System.out.println("Hemant Nagpal: " + properties.stringPropertyNames());
 	}
 
 	public CoreConfiguration() {}
