@@ -5,7 +5,7 @@ public enum PaymentType {
 
 
 	CREDITCARD("creditcard"), FREE("free"), COD("cod"), MONEYORDER("moneyorder"), PAYPAL("paypal"),
-	INVOICE("invoice"), DIRECTBANK("directbank"), PAYMENTPLAN("paymentplan"), ACCOUNTCREDIT("accountcredit");
+	INVOICE("invoice"), DIRECTBANK("directbank"), PAYMENTPLAN("paymentplan"), ACCOUNTCREDIT("accountcredit"), RAZORPAY("RAZORPAY");
 
 
 	private String paymentType;

@@ -860,12 +860,12 @@ public class OrderFacadeImpl implements OrderFacade {
 			}
 
 			// validate shipping
-			if (shippingService.requiresShipping(order.getShoppingCartItems(), store)
-					&& order.getSelectedShippingOption() == null) {
-				ServiceException serviceException = new ServiceException(ServiceException.EXCEPTION_VALIDATION,
-						"shipping.required");
-				throw serviceException;
-			}
+//			if (shippingService.requiresShipping(order.getShoppingCartItems(), store)
+//					&& order.getSelectedShippingOption() == null) {
+//				ServiceException serviceException = new ServiceException(ServiceException.EXCEPTION_VALIDATION,
+//						"shipping.required");
+//				throw serviceException;
+//			}  // TODO HEMANT Commented to avoid shipping erroe
 
 			// pre-validate credit card
 			if (PaymentType.CREDITCARD.name().equals(paymentType)

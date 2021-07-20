@@ -487,6 +487,12 @@ function bindActions() {
 		else if(paymentSelection.indexOf('beanstream') >= 0) {
 			$('#paymentMethodType').attr("value", 'CREDITCARD');
 			submitForm();
+		} else if(paymentSelection.indexOf('razorpay') >= 0) {
+			$('#paymentMethodType').attr("value", 'CREDITCARD');
+			submitForm();
+		} else if(paymentSelection.indexOf('Razorpay') >= 0) {
+			$('#paymentMethodType').attr("value", 'CREDITCARD');
+			submitForm();
 		} else {
 			//submit form
 			submitForm();	
