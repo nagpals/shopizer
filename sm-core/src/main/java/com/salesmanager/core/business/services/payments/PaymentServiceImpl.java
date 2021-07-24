@@ -253,9 +253,6 @@ public class PaymentServiceImpl implements PaymentService {
 	
 	@Override
 	public void removePaymentModuleConfiguration(String moduleCode, MerchantStore store) throws ServiceException {
-		
-		
-
 		try {
 			Map<String,IntegrationConfiguration> modules = new HashMap<String,IntegrationConfiguration>();
 			MerchantConfiguration merchantConfiguration = merchantConfigurationService.getMerchantConfiguration(Constants.PAYMENT_MODULES, store);
