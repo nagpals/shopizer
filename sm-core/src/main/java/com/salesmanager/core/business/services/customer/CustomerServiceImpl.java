@@ -85,7 +85,7 @@ public class CustomerServiceImpl extends SalesManagerEntityServiceImpl<Long, Cus
 
 	@Override	
 	public void saveOrUpdate(Customer customer) throws ServiceException {
-
+		System.out.println("Hemant Nagpal Testing class file");
 		LOGGER.debug("Creating Customer");
 		
 		if(customer.getId()!=null && customer.getId()>0) {

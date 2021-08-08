@@ -14,7 +14,7 @@
 	<packaging>jar</packaging>
 
 	<name>sm-core</name>
-	<url>http://www.shopizer.com</url>
+	<url>http://www.pieinfosystems.com</url>
 
 	<properties>
 		<coverage.lines>.00</coverage.lines>
@@ -220,6 +220,12 @@
 		<dependency>
 			<groupId>org.elasticsearch</groupId>
 			<artifactId>elasticsearch</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.razorpay</groupId>
+			<artifactId>razorpay-java</artifactId>
+			<version>1.3.9</version>
 		</dependency>
 
 		<dependency>

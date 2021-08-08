@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -21,10 +22,16 @@ import javax.inject.Inject;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.razorpay.RazorpayClient;
+import com.razorpay.RazorpayException;
+import com.razorpay.Utils;
 import com.salesmanager.core.business.constants.Constants;
 import com.salesmanager.core.business.exception.ServiceException;
 import com.salesmanager.core.business.modules.order.InvoiceModule;
@@ -677,6 +684,35 @@ public class OrderServiceImpl  extends SalesManagerEntityServiceImpl<Long, Order
 		return returnOrders;
 	}
 
+	@Override
+	public com.razorpay.Order createRazorpayOrder(Long amount, String currency) throws RazorpayException {
+		String uniqueId = UUID.randomUUID().toString();// TODO
+		String orderNumber = uniqueId;
+
+		RazorpayClient razorpay = new RazorpayClient("rzp_test_B5kuYOtDuL5oAD", "FKUQxYhEyokGnSnQsaFc5tjn");  // TODO Hemant get razorpay key and secret from db
+
+		JSONObject orderRequest = new JSONObject();
+		orderRequest.put("amount", amount*100);
+		orderRequest.put("currency", "INR");
+		orderRequest.put("receipt", orderNumber);
+
+		com.razorpay.Order razorpayOrder = razorpay.Orders.create(orderRequest);
+		return razorpayOrder;
+		
+	}
+
+	@Override
+	public ResponseEntity<Object> authorizePayment(Map<String, String> queryMap) throws RazorpayException {
+		JSONObject options = new JSONObject();
+		options.put("razorpay_order_id", queryMap.get("order_id"));
+		options.put("razorpay_payment_id", queryMap.get("payment_id"));
+		options.put("razorpay_signature", queryMap.get("signature"));
+		if (Utils.verifyPaymentSignature(options, "rzp_test_B5kuYOtDuL5oAD")) { // TODO Hemant get razorpay key from db
+			return new ResponseEntity<>("Success", HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>("Not Legitimate Payment", HttpStatus.BAD_REQUEST);
+		}
+	}
 
 
 }

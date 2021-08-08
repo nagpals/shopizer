@@ -3,7 +3,11 @@ package com.salesmanager.core.business.services.order;
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.http.ResponseEntity;
+
+import com.razorpay.RazorpayException;
 import com.salesmanager.core.business.exception.ServiceException;
 import com.salesmanager.core.business.services.common.generic.SalesManagerEntityService;
 import com.salesmanager.core.model.customer.Customer;
@@ -126,5 +130,9 @@ public interface OrderService extends SalesManagerEntityService<Long, Order> {
 	 * @throws ServiceException
 	 */
 	List<Order> getCapturableOrders(MerchantStore store, Date startDate, Date endDate) throws ServiceException;
+
+	com.razorpay.Order createRazorpayOrder(Long amount, String currency) throws RazorpayException;
+
+	ResponseEntity<Object> authorizePayment(Map<String, String> queryMap) throws RazorpayException;
 
 }

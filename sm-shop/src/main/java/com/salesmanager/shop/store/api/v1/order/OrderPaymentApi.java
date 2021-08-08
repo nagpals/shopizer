@@ -6,6 +6,7 @@ import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -14,10 +15,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +30,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.razorpay.Order;
+import com.razorpay.RazorpayException;
+import com.razorpay.Utils;
 import com.salesmanager.core.business.services.catalog.product.PricingService;
 import com.salesmanager.core.business.services.customer.CustomerService;
 import com.salesmanager.core.business.services.order.OrderService;
@@ -358,5 +364,37 @@ public class OrderPaymentApi {
 	public ReadableTransaction authorizePayment(@PathVariable Long id, @ApiIgnore MerchantStore merchantStore,
 			@ApiIgnore Language language) {
 		return null;
+	}
+	
+	
+	@RequestMapping(value = { "/private/orders/authorize" }, method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
+			@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
+	public ResponseEntity<Object> authorizePayment(@RequestBody Map<String, String> queryMap, @ApiIgnore MerchantStore merchantStore,
+			@ApiIgnore Language language) {
+		try {
+			return orderService.authorizePayment(queryMap);
+		} catch (Exception e) {
+			return new ResponseEntity<>("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	
+	@RequestMapping(value = { "/private/orders/payment/create" }, method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
+			@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
+	public Order createOrder(@RequestBody Order order,
+			@RequestParam(value = "currency", required = false) String currency, @ApiIgnore MerchantStore merchantStore,
+			@ApiIgnore Language language) {
+		try {
+			return orderService.createRazorpayOrder(order.get("amount"), order.get("currency"));
+		} catch (RazorpayException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

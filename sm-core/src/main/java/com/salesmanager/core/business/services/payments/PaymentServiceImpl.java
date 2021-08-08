@@ -315,7 +315,7 @@ public class PaymentServiceImpl implements PaymentService {
 			throw new ServiceException("No payment module configured");
 		}
 		
-		IntegrationConfiguration configuration = modules.get(payment.getModuleName());
+		IntegrationConfiguration configuration = modules.get("Razorpay");  // TODO   payment.getModuleName()  , made it static for now, to run it 
 		
 		if(configuration==null) {
 			throw new ServiceException("Payment module " + payment.getModuleName() + " is not configured");
@@ -346,7 +346,7 @@ public class PaymentServiceImpl implements PaymentService {
 		} 
 		
 
-		PaymentModule module = this.paymentModules.get(payment.getModuleName());
+		PaymentModule module = this.paymentModules.get("Razorpay");   // TODO Hemant changed this statically to Razorpay, removed "payment.getModuleName()" , Change it 
 		
 		if(module==null) {
 			throw new ServiceException("Payment module " + payment.getModuleName() + " does not exist");
@@ -357,7 +357,7 @@ public class PaymentServiceImpl implements PaymentService {
 			validateCreditCard(creditCardPayment.getCreditCardNumber(),creditCardPayment.getCreditCard(),creditCardPayment.getExpirationMonth(),creditCardPayment.getExpirationYear());
 		}
 		
-		IntegrationModule integrationModule = getPaymentMethodByCode(store,payment.getModuleName());
+		IntegrationModule integrationModule = getPaymentMethodByCode(store,"Razorpay");  // TODO Hemant "payment.getModuleName()" changed this to staitcally Razorpay
 		TransactionType transactionType = TransactionType.valueOf(sTransactionType);
 		if(transactionType==null) {
 			transactionType = payment.getTransactionType();
